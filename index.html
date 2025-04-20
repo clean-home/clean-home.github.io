@@ -39,7 +39,7 @@
             color: var(--dark-color);
             background-color: #fff;
              /* Default padding for desktop fixed header */
-            padding-top: 70px;
+            padding-top: 70px; /* Adjust this based on final desktop header height */
         }
 
         .container {
@@ -78,6 +78,12 @@
             text-decoration: none;
         }
 
+        nav {
+            /* Allow nav to shrink if needed, but prevent it from growing too much */
+            flex-shrink: 1;
+            overflow: hidden; /* Hide overflow in case of extreme shrinking */
+        }
+
         nav ul {
             display: flex;
             list-style: none;
@@ -85,6 +91,7 @@
 
         nav ul li {
             margin-left: 20px;
+            white-space: nowrap; /* Prevent text wrapping within a single nav item */
         }
 
         nav ul li a {
@@ -100,7 +107,8 @@
 
         /* --- Hero Section --- */
         .hero {
-            padding: 80px 0; /* Padding already accounts for body padding */
+            /* Reduced top padding to account for adjusted body padding */
+            padding: 60px 0 80px; /* Adjust top padding if needed */
             background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://picsum.photos/seed/cleanhomebg/1200/600') center/cover no-repeat;
             text-align: center;
         }
@@ -151,6 +159,7 @@
         }
 
         /* --- Mobile Specific & Floating Button --- */
+        /* Mobile call button in header is removed, style is kept for potential reuse */
         .mobile-call .call-btn {
             background-color: #2196F3;
             color: white;
@@ -529,10 +538,11 @@
 
         /* --- Media Queries --- */
         @media (max-width: 768px) {
-             /* Add padding to body to prevent content hiding under fixed header */
-             /* Adjust this value based on actual header height on mobile */
+             /* IMPORTANT: Adjust this padding-top based on the measured height */
+             /* of your header in mobile view using browser developer tools. */
+             /* It might need to be slightly larger than the desktop header height. */
              body {
-                 padding-top: 110px;
+                 padding-top: 100px; /* Initial estimate for mobile header height */
              }
 
             .header-container {
@@ -541,10 +551,39 @@
                 align-items: center;
             }
             .logo { margin-bottom: 10px; text-align: center; width: 100%; }
-            nav ul { margin-top: 5px; justify-content: center; flex-wrap: wrap; padding: 0 10px; }
-            nav ul li { margin: 5px 8px; }
 
-            .hero { padding: 60px 0 40px; background-position: center 70%; }
+            /* Make nav take full width and allow horizontal scroll */
+            nav {
+                width: 100%;
+                overflow-x: auto; /* Enable horizontal scrolling */
+                padding: 5px 0; /* Add some padding */
+            }
+            nav::-webkit-scrollbar {
+                height: 4px; /* Make scrollbar less intrusive */
+            }
+            nav::-webkit-scrollbar-thumb {
+                background: #ccc;
+                border-radius: 2px;
+            }
+
+            nav ul {
+                margin-top: 0; /* Reset margin */
+                justify-content: flex-start; /* Align items to the start */
+                flex-wrap: nowrap; /* Prevent wrapping */
+                padding: 0 15px; /* Add padding inside the scrollable area */
+                width: max-content; /* Allow ul to grow horizontally as needed */
+            }
+            nav ul li {
+                margin: 0 10px; /* Adjust spacing */
+            }
+            nav ul li:first-child {
+                margin-left: 0;
+            }
+             nav ul li:last-child {
+                margin-right: 0;
+            }
+
+            .hero { padding: 40px 0 40px; background-position: center 70%; } /* Adjusted hero padding */
             .hero h1 { font-size: 1.8rem; }
             .hero p { font-size: 1rem; }
             .hero-buttons { flex-direction: column; gap: 15px; align-items: center; width: 90%; margin-left: auto; margin-right: auto; }
@@ -575,20 +614,25 @@
 
             /* Show mobile-only elements */
             .mobile-only { display: inline-block; }
-            .modal .mobile-only { display: inline-block !important; }
+            .modal .mobile-only { display: block !important; } /* Ensure modal button shows */
             .floating-call { display: flex; }
         }
 
         @media (max-width: 500px) {
-             /* Adjust padding for potentially smaller header */
+             /* Check and adjust body padding for smaller screens if header height differs */
              body {
-                 padding-top: 100px;
+                 padding-top: 95px; /* Example: slightly smaller */
              }
-             .hero { padding: 40px 0 30px; }
+             .hero { padding: 30px 0 30px; }
              .big-phone-link { font-size: 1.8rem; padding: 12px 25px; }
              .phone-icon { margin-right: 10px;}
              .comparison-container { height: 200px; } /* Further adjust height */
              .comparison-label { font-size: 0.8em; padding: 4px 8px;}
+
+             /* Further adjust nav item spacing if needed */
+             nav ul li {
+                margin: 0 8px;
+             }
         }
 
         /* Hide mobile-only elements on larger screens */
@@ -597,11 +641,29 @@
             .floating-call { display: none; }
             /* Ensure desktop body padding is correct */
              body {
-                 padding-top: 70px;
+                 padding-top: 70px; /* Restore desktop padding */
              }
-             /* Restore original hero padding if needed after body padding adjustment */
+             /* Restore original hero padding if needed */
              .hero {
                  padding-top: 80px;
+                 padding-bottom: 80px;
+             }
+             /* Ensure nav scrolling is off */
+              nav {
+                 overflow-x: visible;
+                 width: auto; /* Reset width */
+              }
+             nav ul {
+                 justify-content: flex-end; /* Align to right on desktop */
+                 flex-wrap: wrap; /* Allow wrapping again if needed on desktop, though unlikely */
+                 padding: 0; /* Reset padding */
+                 width: auto; /* Reset width */
+             }
+              nav ul li {
+                 margin: 0 0 0 20px; /* Restore original desktop margin */
+             }
+             nav ul li:first-child {
+                margin-left: 20px; /* Restore */
              }
         }
 
@@ -612,44 +674,55 @@
     <script>
         const COMPANY_PHONE = '010-9188-9094'; // 실제 번호로 변경하세요!
         let headerHeight = 70; // Default desktop header height
+
+        // Function to calculate header height and update body padding
+        // Call this on DOMContentLoaded and resize
+        function updateBodyPadding() {
+            const header = document.querySelector('header');
+            if (header) {
+                headerHeight = header.offsetHeight;
+                // Check if on mobile (using window width as a proxy for media query)
+                if (window.innerWidth <= 768) {
+                     // Set body padding dynamically - uncomment if CSS alone is not reliable
+                    // document.body.style.paddingTop = headerHeight + 'px';
+                    // console.log('Mobile header height:', headerHeight); // For debugging
+                } else {
+                    // Set desktop padding (can also be done via CSS media query min-width: 769px)
+                    // document.body.style.paddingTop = headerHeight + 'px';
+                     // console.log('Desktop header height:', headerHeight); // For debugging
+                }
+            }
+        }
+
+
         let gallerySwiperInstance = null; // To hold the Swiper instance
 
         document.addEventListener('DOMContentLoaded', function() {
             updatePhoneNumbers();
             initFAQ();
-            calculateHeaderHeight(); // Calculate initial header height
-            initSmoothScroll(); // Initialize after headerHeight is known
+            // updateBodyPadding(); // Calculate initial padding - Use CSS first
+            initSmoothScroll(); // Initialize smooth scroll
             initPhoneModal();
             initGallerySwiper(); // Initialize Swiper Slider
             initComparisonToggle(); // Initialize Before/After toggle logic
-            // Mobile style toggles are primarily handled by CSS media queries now
 
-            // Recalculate header height on resize
-            window.addEventListener('resize', calculateHeaderHeight);
+            // Recalculate padding on resize - Use CSS first
+            // window.addEventListener('resize', updateBodyPadding);
             // Handle header shadow effect on scroll
             window.addEventListener('scroll', handleScrollEffects);
         });
-
-        // Calculate the actual height of the fixed header
-        function calculateHeaderHeight() {
-            const header = document.querySelector('header');
-            if (header) {
-                headerHeight = header.offsetHeight;
-                // Update body padding dynamically ONLY IF CSS approach is insufficient
-                // document.body.style.paddingTop = headerHeight + 'px';
-            }
-        }
 
         // Update all phone number displays and links
         function updatePhoneNumbers() {
             const cleanPhone = COMPANY_PHONE.replace(/-/g, '');
             document.querySelectorAll('a[href^="tel:"]').forEach(link => {
                 link.href = `tel:${cleanPhone}`;
-                // Ensure links intended for modal/call have the class
-                // Example: If a link should trigger the modal/call but might miss the class
-                // if (link.closest('.hero-buttons, .service-card, .contact-info, .footer-column, #phoneModal, .floating-call')) {
-                //    link.classList.add('phone-link');
-                // }
+                // Add class for JS hooks if needed elsewhere
+                if (!link.classList.contains('phone-link')) {
+                     if (link.closest('.hero-buttons, .contact-info, .footer-column, #phoneModal, .floating-call')) {
+                        link.classList.add('phone-link');
+                     }
+                }
             });
             document.querySelectorAll('.phone-display').forEach(element => {
                 element.textContent = COMPANY_PHONE;
@@ -680,7 +753,6 @@
         function handleScrollEffects() {
              const header = document.querySelector('header');
              if (!header) return;
-             // Add shadow slightly down the page
              if (window.scrollY > 10) {
                  header.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)';
              } else {
@@ -695,18 +767,16 @@
                  if (!anchor.closest('.modal') && !anchor.classList.contains('phone-link')) {
                      anchor.addEventListener('click', function (e) {
                          const targetId = this.getAttribute('href');
-                         // Check if it's a valid internal link
                          if (targetId && targetId.startsWith('#') && targetId.length > 1) {
                              const targetElement = document.querySelector(targetId);
                              if (targetElement) {
                                  e.preventDefault();
+                                 const header = document.querySelector('header');
+                                 // Use dynamic header height if available, else fallback
+                                 const currentHeaderHeight = header ? header.offsetHeight : 70; // Use dynamic height
                                  const elementPosition = targetElement.getBoundingClientRect().top;
-                                 // Use the dynamically calculated headerHeight for offset
-                                 const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+                                 const offsetPosition = elementPosition + window.pageYOffset - currentHeaderHeight;
 
-                                 // Use native smooth scrolling if preferred over JS calculation
-                                 // targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                 // Or use JS calculation for offset:
                                  window.scrollTo({
                                      top: offsetPosition,
                                      behavior: 'smooth'
@@ -725,18 +795,15 @@
              const closeButton = modal.querySelector('.close-modal');
              if (!closeButton) return;
 
-             // Use event delegation on body to catch clicks on phone links
              document.body.addEventListener('click', function(e) {
                  const phoneLink = findPhoneLink(e.target);
-                 // Show modal only on desktop (width > 768px)
-                 if (phoneLink && window.innerWidth > 768) {
-                     e.preventDefault(); // Prevent default tel: link action on desktop
+                 // Show modal only on desktop (width > 768px) and if it's not the modal's own call button
+                 if (phoneLink && window.innerWidth > 768 && !phoneLink.closest('.modal-content')) {
+                     e.preventDefault();
                      modal.style.display = 'block';
                  }
-                 // On mobile, the default tel: link behavior occurs naturally
              });
 
-             // Close modal functionality
              closeButton.addEventListener('click', () => modal.style.display = 'none');
              window.addEventListener('click', (e) => {
                  if (e.target === modal) modal.style.display = 'none';
@@ -747,58 +814,30 @@
         function findPhoneLink(element) {
              let currentElement = element;
              while (currentElement && currentElement !== document.body) {
-                 // Check if it's an anchor tag with the 'phone-link' class
                  if (currentElement.tagName === 'A' && currentElement.classList.contains('phone-link')) {
                      return currentElement;
                  }
                  currentElement = currentElement.parentElement;
              }
-             return null; // No phone link found
+             return null;
         }
 
         // Initialize Swiper JS for the Gallery
         function initGallerySwiper() {
-            // Destroy previous instance if it exists (useful for potential re-initialization)
             if (gallerySwiperInstance) {
                  gallerySwiperInstance.destroy(true, true);
                  gallerySwiperInstance = null;
             }
-
             gallerySwiperInstance = new Swiper('.gallery-swiper', {
-                // Configuration
-                loop: true,             // Enable continuous loop mode
-                slidesPerView: 1,       // Default slides per view (mobile-first)
-                spaceBetween: 20,       // Space between slides
-
-                // Pagination dots
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,      // Allow clicking on dots to navigate
-                },
-
-                // Navigation arrows
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-
-                 // Responsive breakpoints
+                loop: true,
+                slidesPerView: 1,
+                spaceBetween: 20,
+                pagination: { el: '.swiper-pagination', clickable: true },
+                navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
                  breakpoints: {
-                    // when window width is >= 500px
-                    500: {
-                      slidesPerView: 1, // Keep 1 slide longer for better B/A view on small tablets
-                      spaceBetween: 20
-                    },
-                    // when window width is >= 769px (Desktop)
-                    769: {
-                      slidesPerView: 2, // Show 2 slides on medium screens/tablets
-                      spaceBetween: 30
-                    },
-                     // when window width is >= 1024px (Larger Desktop)
-                     1024: {
-                       slidesPerView: 3, // Show 3 slides on larger screens
-                       spaceBetween: 30
-                     }
+                    500: { slidesPerView: 1, spaceBetween: 20 },
+                    769: { slidesPerView: 2, spaceBetween: 30 },
+                    1024: { slidesPerView: 3, spaceBetween: 30 }
                   }
             });
         }
@@ -806,18 +845,11 @@
         // Initialize Before/After Toggle Logic for Gallery Images
         function initComparisonToggle() {
             const swiperWrapper = document.querySelector('.gallery-swiper .swiper-wrapper');
-
-            // Use event delegation on the swiper wrapper
             if (swiperWrapper) {
                 swiperWrapper.addEventListener('click', function(event) {
-                    // Find the closest comparison container from the clicked element
                     const comparisonContainer = event.target.closest('.comparison-container');
-
                     if (comparisonContainer) {
-                        // Toggle the 'show-after' class on the container
                         comparisonContainer.classList.toggle('show-after');
-
-                        // Update the label text accordingly
                         const label = comparisonContainer.querySelector('.comparison-label');
                         if (label) {
                             label.textContent = comparisonContainer.classList.contains('show-after') ? 'After' : 'Before';
@@ -842,10 +874,7 @@
                     <li><a href="#process">이용방법</a></li>
                     <li><a href="#faq">자주 묻는 질문</a></li>
                     <li><a href="#contact">문의하기</a></li>
-                    <!-- Mobile Only Call Button in Header -->
-                    <li class="mobile-call mobile-only">
-                        <a href="tel:" class="call-btn phone-link">전화 <span class="phone-display">010-XXXX-XXXX</span></a>
-                    </li>
+                    <!-- Removed Mobile Only Call Button from here -->
                 </ul>
             </nav>
         </div>
@@ -1125,7 +1154,7 @@
                     <h3>문의 정보</h3>
                     <!-- Add phone-link class for modal trigger -->
                     <p>전화: <a href="tel:" class="phone-link" style="color:#bbb; text-decoration:none;"><span class="phone-display">010-XXXX-XXXX</span></a></p>
-                </div>
+                 </div>
             </div>
             <div class="copyright">
                 <p>© 2024 클린홈. All Rights Reserved.</p>
