@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>클린홈 - 집 정리 및 가구 수거 전문</title>
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #388E3C;
+            --light-color: #F1F8E9;
+            --dark-color: #333;
+            --gray-color: #f5f5f5;
+            /* Swiper Theme Colors */
+            --swiper-theme-color: var(--primary-color);
+            --swiper-navigation-color: var(--primary-color);
+            --swiper-pagination-color: var(--primary-color);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Apply smooth scroll globally */
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #fff;
+             /* Default padding for desktop fixed header */
+            padding-top: 70px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Lighter initial shadow */
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            max-width: 1200px; /* Match container width */
+            margin: 0 auto; /* Center header content */
+            padding-left: 20px; /* Match container padding */
+            padding-right: 20px; /* Match container padding */
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 80px 0; /* Padding already accounts for body padding */
+            background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://picsum.photos/seed/cleanhomebg/1200/600') center/cover no-repeat;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: #555;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-call {
+            background-color: #2196F3;
+        }
+
+        .btn-call:hover {
+            background-color: #0b7dda;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        /* --- Mobile Specific & Floating Button --- */
+        .mobile-call .call-btn {
+            background-color: #2196F3;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 30px;
+            display: inline-block;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+         .mobile-call .call-btn:hover {
+            background-color: #0b7dda;
+         }
+
+        .floating-call {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 999;
+            text-decoration: none;
+            font-size: 24px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+            50% { transform: scale(1.1); box-shadow: 0 6px 12px rgba(0,0,0,0.3); }
+            100% { transform: scale(1); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        }
+
+        .mobile-only { display: none; } /* Hide by default, shown via media query */
+
+        /* --- General Section Styling --- */
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--dark-color);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* --- Services Section --- */
+        .services {
+            padding: 80px 0;
+            background-color: var(--light-color);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .service-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .service-content p {
+            color: #666;
+            margin-bottom: 0;
+            flex-grow: 1;
+        }
+
+        /* --- Gallery Section (Swiper with Before/After) --- */
+        .gallery-section {
+            padding: 80px 0;
+            background-color: #fff;
+            position: relative;
+        }
+
+        .gallery-swiper {
+            width: 100%;
+            padding-bottom: 60px; /* Space for pagination and label */
+        }
+
+        .swiper-slide {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .comparison-container {
+            position: relative;
+            width: 100%;
+            height: 280px; /* Default height */
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .comparison-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .comparison-container .after-image {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .comparison-container.show-after .before-image {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .comparison-container.show-after .after-image {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .comparison-label {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.85em;
+            border-radius: 4px;
+            z-index: 10;
+            pointer-events: none;
+            transition: background-color 0.3s;
+        }
+        .comparison-container.show-after .comparison-label {
+            background-color: rgba(76, 175, 80, 0.8); /* Primary color */
+        }
+
+        /* Swiper Navigation/Pagination */
+        .swiper-button-next, .swiper-button-prev {
+            color: var(--swiper-navigation-color);
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            right: 10px; left: auto;
+            top: 50%;
+            transform: translateY(-80%); /* Adjust vertical align */
+        }
+        .swiper-button-prev { left: 10px; right: auto; }
+        .swiper-button-next::after, .swiper-button-prev::after { font-size: 18px; font-weight: bold; }
+        .swiper-pagination-bullet { background-color: #ccc; opacity: 1; }
+        .swiper-pagination-bullet-active { background-color: var(--swiper-pagination-color); }
+
+        /* --- Process Section --- */
+        .process {
+            padding: 80px 0;
+            background-color: var(--light-color);
+        }
+
+        .process-steps {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 220px;
+            max-width: 250px;
+            text-align: center;
+            padding: 0 15px;
+            margin-bottom: 30px;
+        }
+
+        .step-icon {
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            border: 2px solid var(--primary-color);
+        }
+
+        .step h3 { font-size: 1.2rem; margin-bottom: 10px; color: var(--dark-color); }
+        .step p { color: #666; font-size: 0.95rem; }
+
+        /* --- FAQ Section --- */
+        .faq {
+            padding: 80px 0;
+            background-color: var(--gray-color);
+        }
+
+        .faq-list { max-width: 800px; margin: 0 auto; }
+
+        .faq-item {
+            background-color: white;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+            transition: background-color 0.2s;
+        }
+        .faq-question:hover { background-color: #f9f9f9; }
+        .faq-question::after {
+            content: '+';
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            color: #555;
+            background-color: #fdfdfd;
+            border-top: 1px solid #eee;
+        }
+         .faq-answer p { padding: 20px 0; }
+        .faq-item.active .faq-question { background-color: #f5f5f5; font-weight: 600; }
+        .faq-item.active .faq-question::after { content: '−'; transform: rotate(180deg); }
+        .faq-item.active .faq-answer { max-height: 300px; }
+
+        /* --- Contact Section --- */
+        .contact { padding: 80px 0; background-color: #fff; }
+
+        .contact-info {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: var(--light-color);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .contact-details h3 { font-size: 1.8rem; margin-bottom: 15px; color: var(--dark-color); }
+        .contact-details p { margin-bottom: 25px; color: #555; font-size: 1.1rem; }
+        .phone-number { margin: 30px 0; }
+
+        .big-phone-link {
+            display: inline-block;
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 15px 35px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        .big-phone-link:hover { background-color: var(--primary-color); color: white; transform: scale(1.05); }
+        .phone-icon { display: inline-block; margin-right: 15px; animation: shake 1.8s infinite; }
+
+        @keyframes shake {
+            0% { transform: rotate(0deg); } 5% { transform: rotate(-8deg); } 10% { transform: rotate(8deg); }
+            15% { transform: rotate(-8deg); } 20% { transform: rotate(8deg); } 25% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* --- Footer --- */
+        footer { background-color: var(--dark-color); color: #ccc; padding: 60px 0 20px; }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem; margin-bottom: 25px; position: relative; padding-bottom: 10px; color: white;
+        }
+        .footer-column h3::after {
+            content: ''; position: absolute; width: 35px; height: 2px; background-color: var(--primary-color); bottom: 0; left: 0;
+        }
+        .footer-column p { line-height: 1.7; }
+        .footer-column ul { list-style: none; padding-left: 0; } /* Remove default padding */
+        .footer-column ul li { margin-bottom: 12px; }
+        .footer-column ul li a { color: #bbb; text-decoration: none; transition: color 0.3s, padding-left 0.3s; }
+        .footer-column ul li a:hover { color: white; padding-left: 5px; }
+
+        .copyright {
+            text-align: center; padding-top: 30px; margin-top: 20px; border-top: 1px solid #444; color: #aaa; font-size: 0.9rem;
+        }
+
+        /* --- Modal Styles --- */
+        .modal {
+            display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6);
+        }
+        .modal-content {
+            background-color: #fefefe; margin: 15% auto; padding: 30px 40px; border: 1px solid #ddd; width: 90%; max-width: 500px; border-radius: 8px; text-align: center; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .close-modal {
+            color: #aaa; position: absolute; top: 10px; right: 20px; font-size: 32px; font-weight: bold; line-height: 1; cursor: pointer; transition: color 0.2s;
+        }
+        .close-modal:hover, .close-modal:focus { color: black; text-decoration: none; }
+        .modal-title { font-size: 1.8rem; margin-bottom: 15px; color: var(--primary-color); }
+        .modal-desc { font-size: 1.05rem; color: #555; margin-bottom: 20px; line-height: 1.5; }
+        .modal-phone { font-size: 1.6rem; font-weight: bold; color: var(--dark-color); margin: 25px 0; display: block; background-color: #f0f0f0; padding: 10px; border-radius: 4px; }
+        .modal-button {
+            display: inline-block; background-color: var(--primary-color); color: white; padding: 12px 30px; border-radius: 4px; text-decoration: none; font-weight: 500; transition: background-color 0.3s; margin-top: 20px; border: none; cursor: pointer;
+        }
+        .modal-button:hover { background-color: var(--secondary-color); }
+
+
+        /* --- Media Queries --- */
+        @media (max-width: 768px) {
+             /* Add padding to body to prevent content hiding under fixed header */
+             /* Adjust this value based on actual header height on mobile */
+             body {
+                 padding-top: 110px;
+             }
+
+            .header-container {
+                flex-direction: column;
+                padding: 10px 0;
+                align-items: center;
+            }
+            .logo { margin-bottom: 10px; text-align: center; width: 100%; }
+            nav ul { margin-top: 5px; justify-content: center; flex-wrap: wrap; padding: 0 10px; }
+            nav ul li { margin: 5px 8px; }
+
+            .hero { padding: 60px 0 40px; background-position: center 70%; }
+            .hero h1 { font-size: 1.8rem; }
+            .hero p { font-size: 1rem; }
+            .hero-buttons { flex-direction: column; gap: 15px; align-items: center; width: 90%; margin-left: auto; margin-right: auto; }
+            .hero-buttons .btn { width: 100%; text-align: center; padding: 15px 20px; }
+
+            .process-steps { flex-direction: column; align-items: center; }
+            .step { margin-bottom: 40px; max-width: 300px; width: 100%; }
+
+            .services-grid { grid-template-columns: 1fr; }
+
+            /* Adjust Swiper arrows/pagination for mobile */
+            .swiper-button-next, .swiper-button-prev { width: 35px; height: 35px; top: 50%; transform: translateY(-90%); }
+            .swiper-button-next::after, .swiper-button-prev::after { font-size: 16px; }
+            .gallery-swiper { padding-bottom: 55px; }
+            .comparison-container { height: 240px; } /* Adjust height for mobile */
+
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
+            .footer-column h3::after { left: 50%; transform: translateX(-50%); }
+            .footer-column ul { padding-left: 0; } /* Reset padding for centered text */
+
+            .modal-content { width: 90%; margin: 20% auto; padding: 20px; }
+            .modal-title { font-size: 1.5rem; }
+            .modal-phone { font-size: 1.4rem; }
+            .modal-desc { font-size: 1rem; }
+
+            /* Header remains fixed */
+            header { position: fixed; }
+
+            /* Show mobile-only elements */
+            .mobile-only { display: inline-block; }
+            .modal .mobile-only { display: inline-block !important; }
+            .floating-call { display: flex; }
+        }
+
+        @media (max-width: 500px) {
+             /* Adjust padding for potentially smaller header */
+             body {
+                 padding-top: 100px;
+             }
+             .hero { padding: 40px 0 30px; }
+             .big-phone-link { font-size: 1.8rem; padding: 12px 25px; }
+             .phone-icon { margin-right: 10px;}
+             .comparison-container { height: 200px; } /* Further adjust height */
+             .comparison-label { font-size: 0.8em; padding: 4px 8px;}
+        }
+
+        /* Hide mobile-only elements on larger screens */
+        @media (min-width: 769px) {
+            .mobile-only { display: none !important; }
+            .floating-call { display: none; }
+            /* Ensure desktop body padding is correct */
+             body {
+                 padding-top: 70px;
+             }
+             /* Restore original hero padding if needed after body padding adjustment */
+             .hero {
+                 padding-top: 80px;
+             }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 상수 정의 및 스크립트 -->
+    <script>
+        const COMPANY_PHONE = '010-9188-9094'; // 실제 번호로 변경하세요!
+        let headerHeight = 70; // Default desktop header height
+        let gallerySwiperInstance = null; // To hold the Swiper instance
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePhoneNumbers();
+            initFAQ();
+            calculateHeaderHeight(); // Calculate initial header height
+            initSmoothScroll(); // Initialize after headerHeight is known
+            initPhoneModal();
+            initGallerySwiper(); // Initialize Swiper Slider
+            initComparisonToggle(); // Initialize Before/After toggle logic
+            // Mobile style toggles are primarily handled by CSS media queries now
+
+            // Recalculate header height on resize
+            window.addEventListener('resize', calculateHeaderHeight);
+            // Handle header shadow effect on scroll
+            window.addEventListener('scroll', handleScrollEffects);
+        });
+
+        // Calculate the actual height of the fixed header
+        function calculateHeaderHeight() {
+            const header = document.querySelector('header');
+            if (header) {
+                headerHeight = header.offsetHeight;
+                // Update body padding dynamically ONLY IF CSS approach is insufficient
+                // document.body.style.paddingTop = headerHeight + 'px';
+            }
+        }
+
+        // Update all phone number displays and links
+        function updatePhoneNumbers() {
+            const cleanPhone = COMPANY_PHONE.replace(/-/g, '');
+            document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+                link.href = `tel:${cleanPhone}`;
+                // Ensure links intended for modal/call have the class
+                // Example: If a link should trigger the modal/call but might miss the class
+                // if (link.closest('.hero-buttons, .service-card, .contact-info, .footer-column, #phoneModal, .floating-call')) {
+                //    link.classList.add('phone-link');
+                // }
+            });
+            document.querySelectorAll('.phone-display').forEach(element => {
+                element.textContent = COMPANY_PHONE;
+            });
+        }
+
+        // Initialize FAQ Accordion
+        function initFAQ() {
+             const faqItems = document.querySelectorAll('.faq-item');
+             faqItems.forEach(item => {
+                 const question = item.querySelector('.faq-question');
+                 if (question) {
+                     question.addEventListener('click', () => {
+                         // Close other items
+                         faqItems.forEach(otherItem => {
+                             if (otherItem !== item) {
+                                 otherItem.classList.remove('active');
+                             }
+                         });
+                         // Toggle current item
+                         item.classList.toggle('active');
+                     });
+                 }
+             });
+        }
+
+        // Add shadow to header on scroll
+        function handleScrollEffects() {
+             const header = document.querySelector('header');
+             if (!header) return;
+             // Add shadow slightly down the page
+             if (window.scrollY > 10) {
+                 header.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)';
+             } else {
+                 header.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)';
+             }
+        }
+
+        // Initialize Smooth Scrolling for internal links
+        function initSmoothScroll() {
+             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                 // Exclude modal links and phone links
+                 if (!anchor.closest('.modal') && !anchor.classList.contains('phone-link')) {
+                     anchor.addEventListener('click', function (e) {
+                         const targetId = this.getAttribute('href');
+                         // Check if it's a valid internal link
+                         if (targetId && targetId.startsWith('#') && targetId.length > 1) {
+                             const targetElement = document.querySelector(targetId);
+                             if (targetElement) {
+                                 e.preventDefault();
+                                 const elementPosition = targetElement.getBoundingClientRect().top;
+                                 // Use the dynamically calculated headerHeight for offset
+                                 const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+
+                                 // Use native smooth scrolling if preferred over JS calculation
+                                 // targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                 // Or use JS calculation for offset:
+                                 window.scrollTo({
+                                     top: offsetPosition,
+                                     behavior: 'smooth'
+                                 });
+                             }
+                         }
+                     });
+                 }
+             });
+        }
+
+        // Initialize the Phone Call Modal (for Desktop)
+        function initPhoneModal() {
+             const modal = document.getElementById('phoneModal');
+             if (!modal) return;
+             const closeButton = modal.querySelector('.close-modal');
+             if (!closeButton) return;
+
+             // Use event delegation on body to catch clicks on phone links
+             document.body.addEventListener('click', function(e) {
+                 const phoneLink = findPhoneLink(e.target);
+                 // Show modal only on desktop (width > 768px)
+                 if (phoneLink && window.innerWidth > 768) {
+                     e.preventDefault(); // Prevent default tel: link action on desktop
+                     modal.style.display = 'block';
+                 }
+                 // On mobile, the default tel: link behavior occurs naturally
+             });
+
+             // Close modal functionality
+             closeButton.addEventListener('click', () => modal.style.display = 'none');
+             window.addEventListener('click', (e) => {
+                 if (e.target === modal) modal.style.display = 'none';
+             });
+        }
+
+        // Helper function to find the closest ancestor that is a phone link
+        function findPhoneLink(element) {
+             let currentElement = element;
+             while (currentElement && currentElement !== document.body) {
+                 // Check if it's an anchor tag with the 'phone-link' class
+                 if (currentElement.tagName === 'A' && currentElement.classList.contains('phone-link')) {
+                     return currentElement;
+                 }
+                 currentElement = currentElement.parentElement;
+             }
+             return null; // No phone link found
+        }
+
+        // Initialize Swiper JS for the Gallery
+        function initGallerySwiper() {
+            // Destroy previous instance if it exists (useful for potential re-initialization)
+            if (gallerySwiperInstance) {
+                 gallerySwiperInstance.destroy(true, true);
+                 gallerySwiperInstance = null;
+            }
+
+            gallerySwiperInstance = new Swiper('.gallery-swiper', {
+                // Configuration
+                loop: true,             // Enable continuous loop mode
+                slidesPerView: 1,       // Default slides per view (mobile-first)
+                spaceBetween: 20,       // Space between slides
+
+                // Pagination dots
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,      // Allow clicking on dots to navigate
+                },
+
+                // Navigation arrows
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+
+                 // Responsive breakpoints
+                 breakpoints: {
+                    // when window width is >= 500px
+                    500: {
+                      slidesPerView: 1, // Keep 1 slide longer for better B/A view on small tablets
+                      spaceBetween: 20
+                    },
+                    // when window width is >= 769px (Desktop)
+                    769: {
+                      slidesPerView: 2, // Show 2 slides on medium screens/tablets
+                      spaceBetween: 30
+                    },
+                     // when window width is >= 1024px (Larger Desktop)
+                     1024: {
+                       slidesPerView: 3, // Show 3 slides on larger screens
+                       spaceBetween: 30
+                     }
+                  }
+            });
+        }
+
+        // Initialize Before/After Toggle Logic for Gallery Images
+        function initComparisonToggle() {
+            const swiperWrapper = document.querySelector('.gallery-swiper .swiper-wrapper');
+
+            // Use event delegation on the swiper wrapper
+            if (swiperWrapper) {
+                swiperWrapper.addEventListener('click', function(event) {
+                    // Find the closest comparison container from the clicked element
+                    const comparisonContainer = event.target.closest('.comparison-container');
+
+                    if (comparisonContainer) {
+                        // Toggle the 'show-after' class on the container
+                        comparisonContainer.classList.toggle('show-after');
+
+                        // Update the label text accordingly
+                        const label = comparisonContainer.querySelector('.comparison-label');
+                        if (label) {
+                            label.textContent = comparisonContainer.classList.contains('show-after') ? 'After' : 'Before';
+                        }
+                    }
+                });
+            } else {
+                console.error("Swiper wrapper not found for comparison toggle.");
+            }
+        }
+
+    </script>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">클린홈</a>
+            <nav>
+                <ul>
+                    <li><a href="#services">서비스</a></li>
+                    <li><a href="#gallery">작업사진</a></li>
+                    <li><a href="#process">이용방법</a></li>
+                    <li><a href="#faq">자주 묻는 질문</a></li>
+                    <li><a href="#contact">문의하기</a></li>
+                    <!-- Mobile Only Call Button in Header -->
+                    <li class="mobile-call mobile-only">
+                        <a href="tel:" class="call-btn phone-link">전화 <span class="phone-display">010-XXXX-XXXX</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>집 정리와 가구 수거, 한번에 해결하세요</h1>
+            <p>불필요한 가구, 가전제품을 빠르고 친환경적으로 처리해 드립니다.<br>신속한 수거 서비스로 깨끗한 공간을 만들어보세요.</p>
+            <div class="hero-buttons">
+                <a href="tel:" class="btn btn-call phone-link">전화 문의</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>제공 서비스</h2>
+            </div>
+            <div class="services-grid">
+                <!-- Service Card 1 -->
+                <div class="service-card">
+                    <img src="./images/청소.jpg" alt="집 정리 서비스">
+                    <div class="service-content">
+                        <h3>집 정리 서비스</h3>
+                        <p>이사, 정리, 청소 등 공간 정리가 필요한 모든 상황에 도움을 드립니다.</p>
+                    </div>
+                </div>
+                <!-- Service Card 2 -->
+                <div class="service-card">
+                    <img src="./images/가구.jpg" alt="가구 수거">
+                    <div class="service-content">
+                        <h3>가구 수거</h3>
+                        <p>불필요한 가구를 신속하게 수거하여 공간을 확보해 드립니다.</p>
+                    </div>
+                </div>
+                <!-- Service Card 3 -->
+                <div class="service-card">
+                    <img src="./images/가전.jpg" alt="폐 가전 수거">
+                    <div class="service-content">
+                        <h3>폐 가전 수거</h3>
+                        <p>사용하지 않는 가전제품을 환경 친화적인 방법으로 처리합니다.</p>
+                    </div>
+                </div>
+                <!-- Service Card 4 -->
+                <div class="service-card">
+                    <img src="./images/냉장고.jpg" alt="중고 가전 매입">
+                    <div class="service-content">
+                        <h3>중고 가전 매입</h3>
+                        <p>상태가 좋은 가전은 적정가로 매입하여 경제적 이익을 드립니다.</p>
+                    </div>
+                </div>
+                <!-- Service Card 5 -->
+                <div class="service-card">
+                    <img src="./images/수거.jpg" alt="무상 수거">
+                    <div class="service-content">
+                        <h3>무상 수거</h3>
+                        <p>재활용 가치가 높은 일부 품목은 무상으로 수거해 드립니다.</p>
+                    </div>
+                </div>
+                <!-- Service Card 6 -->
+                <div class="service-card">
+                    <img src="./images/폐기물.jpg" alt="대형 폐기물 처리">
+                    <div class="service-content">
+                        <h3>대형 폐기물 처리</h3>
+                        <p>처리가 어려운 대형 폐기물도 규정에 맞게 안전하게 처리합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section (Swiper with Before/After) -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>최근 작업 사진 (Before & After)</h2>
+            </div>
+            <!-- Slider main container -->
+            <div class="swiper gallery-swiper">
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                    <!-- Slides -->
+                    <!-- Slide 1 -->
+                    <div class="swiper-slide">
+                        <div class="comparison-container" aria-label="작업 1: 클릭하여 Before/After 보기">
+                            <img src="./images/1_before.jpg" alt="작업 1 Before" class="before-image">
+                            <img src="./images/1_after.jpg" alt="작업 1 After" class="after-image">
+                            <span class="comparison-label">Before</span>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="swiper-slide">
+                        <div class="comparison-container" aria-label="작업 2: 클릭하여 Before/After 보기">
+                            <img src="./images/2_before.jpg" alt="작업 2 Before" class="before-image">
+                            <img src="./images/2_after.jpg" alt="작업 2 After" class="after-image">
+                            <span class="comparison-label">Before</span>
+                        </div>
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="swiper-slide">
+                         <div class="comparison-container" aria-label="작업 3: 클릭하여 Before/After 보기">
+                             <img src="./images/3_before.jpg" alt="작업 3 Before" class="before-image">
+                             <img src="./images/3_after.jpg" alt="작업 3 After" class="after-image">
+                             <span class="comparison-label">Before</span>
+                         </div>
+                    </div>
+                    <!-- Slide 4 -->
+                    <div class="swiper-slide">
+                         <div class="comparison-container" aria-label="작업 4: 클릭하여 Before/After 보기">
+                             <img src="./images/4_before.jpg" alt="작업 4 Before" class="before-image">
+                             <img src="./images/4_after.jpg" alt="작업 4 After" class="after-image">
+                             <span class="comparison-label">Before</span>
+                         </div>
+                    </div>
+                    <!-- Slide 5 -->
+                    <div class="swiper-slide">
+                        <div class="comparison-container" aria-label="작업 5: 클릭하여 Before/After 보기">
+                            <img src="./images/5_before.jpg" alt="작업 5 Before" class="before-image">
+                            <img src="./images/5_after.jpg" alt="작업 5 After" class="after-image">
+                            <span class="comparison-label">Before</span>
+                        </div>
+                   </div>
+                </div>
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
+                <!-- Navigation Buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+             <p style="text-align: center; margin-top: 15px; color: #666; font-size: 0.9em;">사진을 클릭하면 작업 후 모습을 확인할 수 있습니다.</p>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="process">
+        <div class="container">
+            <div class="section-title">
+                <h2>이용 방법</h2>
+            </div>
+            <div class="process-steps">
+                <!-- Step 1 -->
+                <div class="step">
+                    <div class="step-icon">1</div>
+                    <h3>전화/문자 문의</h3>
+                    <p><span class="phone-display">010-XXXX-XXXX</span>로 전화 또는 사진과 함께 문자로 문의해주세요.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="step">
+                    <div class="step-icon">2</div>
+                    <h3>견적 및 일정 확인</h3>
+                    <p>상담 후 수거 비용 및 가능 일정을 안내받고 확정합니다.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="step">
+                    <div class="step-icon">3</div>
+                    <h3>방문 수거</h3>
+                    <p>약속된 시간에 전문 기사님이 방문하여 신속하고 안전하게 수거합니다.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="step">
+                    <div class="step-icon">4</div>
+                    <h3>처리 완료</h3>
+                    <p>수거된 물품은 규정에 따라 친환경적으로 처리 또는 재활용됩니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="section-title">
+                <h2>자주 묻는 질문</h2>
+            </div>
+            <div class="faq-list">
+                <!-- FAQ Item 1 -->
+                 <div class="faq-item">
+                     <div class="faq-question">서비스 지역은 어디인가요?</div>
+                     <div class="faq-answer">
+                         <p>수도권(서울, 경기, 인천) 전 지역을 중심으로 서비스하고 있으며, 일부 지역은 추가 비용이 발생하거나 서비스가 제한될 수 있습니다. 자세한 내용은 전화(<span class="phone-display">010-XXXX-XXXX</span>)로 문의해주세요.</p>
+                     </div>
+                 </div>
+                 <!-- FAQ Item 2 -->
+                 <div class="faq-item">
+                     <div class="faq-question">견적은 어떻게 받나요?</div>
+                     <div class="faq-answer">
+                         <p>가장 정확한 견적은 수거할 물품의 사진을 찍어 문자(<span class="phone-display">010-XXXX-XXXX</span>)로 보내주시거나, 전화 상담 시 품목, 수량, 상태, 작업 환경(엘리베이터 유무 등)을 상세히 알려주시면 안내해 드립니다.</p>
+                     </div>
+                 </div>
+                 <!-- FAQ Item 3 -->
+                 <div class="faq-item">
+                     <div class="faq-question">수거 비용은 어떻게 되나요?</div>
+                     <div class="faq-answer">
+                         <p>비용은 품목, 수량, 무게, 크기, 작업 난이도, 이동 거리 등에 따라 다릅니다. 기본 수거비가 발생하며, 매입 가능한 품목이 있는 경우 비용에서 차감될 수 있습니다. 재활용 가치가 높은 특정 품목은 무상 수거도 가능합니다.</p>
+                     </div>
+                 </div>
+                 <!-- FAQ Item 4 -->
+                 <div class="faq-item">
+                     <div class="faq-question">당일 수거도 가능한가요?</div>
+                     <div class="faq-answer">
+                         <p>네, 가능합니다. 다만, 당일 예약은 오전 일찍 연락 주셔야 일정 조율이 용이합니다. 지역과 예약 상황에 따라 어려울 수도 있으니, 급한 경우 빠르게 전화(<span class="phone-display">010-XXXX-XXXX</span>) 문의 바랍니다.</p>
+                     </div>
+                 </div>
+                 <!-- FAQ Item 5 -->
+                 <div class="faq-item">
+                     <div class="faq-question">매입 가능한 품목 조건은 무엇인가요?</div>
+                     <div class="faq-answer">
+                         <p>주로 제조 연식이 5년 이내이고 정상 작동하며 외관 상태가 양호한 가전제품(냉장고, 세탁기, TV 등)과 브랜드 가구 등을 매입합니다. 정확한 매입 가능 여부와 가격은 실물 확인 또는 사진 확인 후 결정됩니다.</p>
+                     </div>
+                 </div>
+                 <!-- FAQ Item 6 -->
+                  <div class="faq-item">
+                     <div class="faq-question">수거 외에 다른 작업도 해주시나요?</div>
+                     <div class="faq-answer">
+                         <p>네, 간단한 가구 이동, 정리, 폐기물 처리 관련 부가 서비스도 가능합니다. 원하시는 작업이 있다면 문의 시 함께 말씀해주세요.</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>간편 전화 문의</h2>
+            </div>
+            <div class="contact-info">
+                <div class="contact-details">
+                    <h3>궁금한 점이 있다면 언제든지 전화주세요!</h3>
+                    <p>견적부터 예약까지, 전화 한 통으로 빠르고 친절하게 상담해 드립니다.</p>
+                    <div class="phone-number">
+                        <!-- Add phone-link class for modal trigger -->
+                        <a href="tel:" class="big-phone-link phone-link">
+                            <span class="phone-icon">📞</span> <span class="phone-display">010-XXXX-XXXX</span>
+                        </a>
+                    </div>
+                    <div class="operation-hours">
+                        <p><strong>운영시간:</strong> 연중무휴 24시간 상담 가능</p>
+                        <p>(단, 실제 방문 수거는 협의된 시간에 진행됩니다)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <!-- Column 1: About -->
+                <div class="footer-column">
+                    <h3>클린홈</h3>
+                    <p>
+                        고객님의 공간을 깨끗하고 쾌적하게! <br>
+                        신속, 정확, 친절한 서비스로 만족을 드립니다.
+                    </p>
+                </div>
+                <!-- Column 2: Quick Links -->
+                <div class="footer-column">
+                    <h3>바로가기</h3>
+                    <ul>
+                        <li><a href="#services">서비스 안내</a></li>
+                        <li><a href="#gallery">작업 사진</a></li>
+                        <li><a href="#process">이용 방법</a></li>
+                        <li><a href="#faq">자주 묻는 질문</a></li>
+                        <li><a href="#contact">전화 문의</a></li>
+                        <!-- <li><a href="#">개인정보처리방침</a></li> -->
+                    </ul>
+                </div>
+                 <!-- Column 3: Contact Info -->
+                 <div class="footer-column">
+                    <h3>문의 정보</h3>
+                    <!-- Add phone-link class for modal trigger -->
+                    <p>전화: <a href="tel:" class="phone-link" style="color:#bbb; text-decoration:none;"><span class="phone-display">010-XXXX-XXXX</span></a></p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2024 클린홈. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Phone Call Modal (Desktop Only) -->
+    <div id="phoneModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" title="닫기">×</span>
+            <h3 class="modal-title">전화 상담 안내</h3>
+            <p class="modal-desc">아래 번호로 연락주시면<br>친절하고 신속하게 상담해 드리겠습니다.</p>
+            <p class="modal-phone"><span class="phone-display">010-XXXX-XXXX</span></p>
+            <p class="modal-desc" style="font-size: 0.9em; color: #777;">운영시간: 24시간 상담 가능</p>
+            <!-- Mobile only call button inside modal -->
+            <a href="tel:" class="modal-button mobile-only phone-link">지금 전화 걸기</a>
+        </div>
+    </div>
+
+    <!-- Floating Call Button (Mobile Only) -->
+    <!-- Add phone-link class for consistency (though default tel: works on mobile) -->
+    <a href="tel:" class="floating-call mobile-only phone-link" title="전화 문의">📞</a>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</body>
+</html>
