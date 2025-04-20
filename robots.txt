@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: [실제 웹사이트 주소]/sitemap.xml
