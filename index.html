@@ -9,10 +9,11 @@
     <meta name="description" content="클린홈은 국내 전 지역 집 정리, 가구 수거, 폐가전 처리, 폐기물 수거 전문 업체입니다. 신속하고 합리적인 비용으로 쾌적한 공간을 만들어 드립니다. 지금 바로 전화(010-9188-9094) 문의하세요!">
 
     <!-- Favicon Links (경로는 실제 파일 위치에 맞게 수정하세요) -->
-    <link rel="icon" href="/favicon.ico" sizes="any"> <!-- .ico 파일 (전통적 방식 및 여러 크기 포함 가능) -->
-    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16"> <!-- 16x16 PNG -->
-    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32"> <!-- 32x32 PNG -->
+    <link rel="icon" href="./images/favicon_io/favicon.ico" sizes="any"> <!-- .ico 파일 (전통적 방식 및 여러 크기 포함 가능) -->
+    <link rel="icon" href="./images/favicon_io/favicon-16x16.png" type="image/png" sizes="16x16"> <!-- 16x16 PNG -->
+    <link rel="icon" href="./images/favicon_io/favicon-32x32.png" type="image/png" sizes="32x32"> <!-- 32x32 PNG -->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180"> <!-- Apple 기기용 아이콘 -->
+    <link rel="manifest" href="./images/favicon_io/site.webmanifest"> <!-- 웹사이트 매니페스트 (PWA 지원) -->
 
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -39,20 +40,20 @@
       // },
       "telephone": "+82-10-9188-9094",
       "openingHours": "Mo-Su 00:00-24:00",
-      "url": "https://clean-home.github.io", // 쉼표(,) 추가, https:// 프로토콜 추가
-      "image": "[대표 이미지 URL]", // 쉼표(,) 추가. 실제 이미지 URL로 교체해야 합니다.
-      "priceRange": "$$", // 쉼표(,) 추가
+      "url": "https://clean-home.github.io", // Ensure this is the correct final URL
+      "image": "[대표 이미지 URL]", // Replace with actual image URL
+      "priceRange": "$$", // Adjust if needed
       "areaServed": {
         "@type": "AdministrativeArea",
         "name": "대한민국"
-      }, // 쉼표(,) 추가
+      },
       "potentialAction": {
         "@type": "ReserveAction",
         "target": {
           "@type": "EntryPoint",
           "telephone": "+82-10-9188-9094",
           "contactType": "customer support"
-        },
+        }, // ***** COMMA ADDED HERE *****
         "result": {
             "@type": "Reservation",
             "reservationFor": {
@@ -525,7 +526,8 @@
 
                 } catch (e) {
                     // The JSON parsing error itself should be caught by Google, but we log it here too.
-                    console.error(`JSON-LD #${index+1}: Could not parse JSON. Error: ${e.message}`);
+                    // The original error should be less frequent now with the fix.
+                    console.error(`JSON-LD #${index+1}: Could not parse JSON (or other JS error). Error: ${e.message}`);
                 }
             });
         }
