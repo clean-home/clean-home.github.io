@@ -8,6 +8,12 @@
     <!-- SEO: 검색 결과 설명을 위한 메타 태그 -->
     <meta name="description" content="클린홈은 국내 전 지역 집 정리, 가구 수거, 폐가전 처리, 폐기물 수거 전문 업체입니다. 신속하고 합리적인 비용으로 쾌적한 공간을 만들어 드립니다. 지금 바로 전화(010-9188-9094) 문의하세요!">
 
+    <!-- Favicon Links (경로는 실제 파일 위치에 맞게 수정하세요) -->
+    <link rel="icon" href="/favicon.ico" sizes="any"> <!-- .ico 파일 (전통적 방식 및 여러 크기 포함 가능) -->
+    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16"> <!-- 16x16 PNG -->
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32"> <!-- 32x32 PNG -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180"> <!-- Apple 기기용 아이콘 -->
+
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <!-- Google Fonts -->
@@ -15,29 +21,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 
+    <!-- *** 수정된 부분 시작 *** -->
     <!-- SEO: Schema Markup (Local Business) - 검색 엔진에 업체 정보 제공 -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "HomeAndConstructionBusiness", // 업종에 더 적합한 타입 선택 가능 (예: "ProfessionalService")
+      "@type": "HomeAndConstructionBusiness", // 업종에 더 적합한 타입 선택 가능 (예: "ProfessionalService", "LocalBusiness")
       "name": "클린홈",
       "description": "전국 집 정리, 가구 수거, 폐가전 처리, 폐기물 수거 전문",
-      <!-- "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "상세주소",
-        "addressLocality": "경상북도",
-        "postalCode": "우편번호",
-        "addressCountry": "KR"
-      }, -->
+      // 주석 처리된 주소 정보는 유효한 JSON 형식이 아니므로 제거하거나 실제 정보로 채우고 주석 해제해야 합니다.
+      // "address": {
+      //   "@type": "PostalAddress",
+      //   "streetAddress": "상세주소",
+      //   "addressLocality": "경상북도",
+      //   "postalCode": "우편번호",
+      //   "addressCountry": "KR"
+      // },
       "telephone": "+82-10-9188-9094",
       "openingHours": "Mo-Su 00:00-24:00",
-      "url": "clean-home.github.io"
-      "image": "[대표 이미지 URL]",
-      "priceRange": "$$",
+      "url": "https://clean-home.github.io", // 쉼표(,) 추가, https:// 프로토콜 추가
+      "image": "[대표 이미지 URL]", // 쉼표(,) 추가. 실제 이미지 URL로 교체해야 합니다.
+      "priceRange": "$$", // 쉼표(,) 추가
       "areaServed": {
         "@type": "AdministrativeArea",
         "name": "대한민국"
-      },
+      }, // 쉼표(,) 추가
       "potentialAction": {
         "@type": "ReserveAction",
         "target": {
@@ -52,11 +60,12 @@
                 "name": "집 정리 및 가구 수거 문의"
             }
         }
-      }
+      } // 마지막 요소 뒤에는 쉼표 없음
     }
     </script>
+    <!-- *** 수정된 부분 끝 *** -->
 
-    <!-- SEO: Schema Markup (FAQ Page) - 검색 엔진에 FAQ 정보 제공 -->
+    <!-- SEO: Schema Markup (FAQ Page) - 검색 엔진에 FAQ 정보 제공 (이 부분은 문제가 없어 보입니다) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -366,6 +375,9 @@
             window.addEventListener('scroll', handleScrollEffects);
             // updateBodyPadding(); // Initial call (optional if CSS padding is reliable)
             // window.addEventListener('resize', updateBodyPadding); // Resize call (optional)
+
+            // SEO: Check and warn about placeholder values in JSON-LD
+            checkJsonLdPlaceholders();
         });
 
         // Update all phone number displays and links using COMPANY_PHONE
@@ -436,6 +448,7 @@
 
              document.body.addEventListener('click', function(e) {
                  const phoneLink = findPhoneLink(e.target);
+                 // Only show modal on desktop for phone links outside the modal itself
                  if (phoneLink && window.innerWidth > 768 && !phoneLink.closest('.modal-content')) {
                      e.preventDefault();
                      modal.style.display = 'block';
@@ -458,6 +471,10 @@
 
         // Initialize Swiper JS for the Gallery
         function initGallerySwiper() {
+            if (typeof Swiper === 'undefined') {
+                console.error('Swiper library not loaded.');
+                return;
+            }
             if (gallerySwiperInstance) gallerySwiperInstance.destroy(true, true);
             gallerySwiperInstance = new Swiper('.gallery-swiper', {
                 loop: true, slidesPerView: 1, spaceBetween: 20,
@@ -482,12 +499,44 @@
             } else console.error("Swiper wrapper not found for comparison toggle.");
         }
 
+        // SEO Helper: Check for common placeholder values in JSON-LD and log warnings
+        function checkJsonLdPlaceholders() {
+            const jsonLdScripts = document.querySelectorAll('script[type="application/ld+json"]');
+            jsonLdScripts.forEach((script, index) => {
+                try {
+                    const data = JSON.parse(script.textContent);
+                    if (data.image && typeof data.image === 'string' && (data.image.includes('[') || data.image.includes('URL'))) {
+                        console.warn(`JSON-LD #${index+1}: Placeholder found in "image" property: "${data.image}". Please replace with a valid image URL.`);
+                    }
+                    if (data.url && typeof data.url === 'string' && (data.url.includes('[') || !data.url.startsWith('http'))) {
+                        console.warn(`JSON-LD #${index+1}: Problem found in "url" property: "${data.url}". Ensure it's a full, valid URL (e.g., "https://...").`);
+                    }
+                    // Add checks for other common placeholders if needed (e.g., address fields)
+                    if (data.address) {
+                        if (data.address.streetAddress && data.address.streetAddress.includes('상세주소')) console.warn(`JSON-LD #${index+1}: Placeholder "상세주소" found in address.streetAddress.`);
+                        if (data.address.postalCode && data.address.postalCode.includes('우편번호')) console.warn(`JSON-LD #${index+1}: Placeholder "우편번호" found in address.postalCode.`);
+                    }
+                    // Check logo link placeholder
+                    const logoLink = document.querySelector('a.logo');
+                    if (logoLink && logoLink.href.includes('[실제 웹사이트 주소]')) {
+                         console.warn('HTML: Placeholder "[실제 웹사이트 주소]" found in logo link href. Please replace with the actual homepage URL.');
+                    }
+
+
+                } catch (e) {
+                    // The JSON parsing error itself should be caught by Google, but we log it here too.
+                    console.error(`JSON-LD #${index+1}: Could not parse JSON. Error: ${e.message}`);
+                }
+            });
+        }
+
     </script>
 
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <a href="[실제 웹사이트 주소]" class="logo">클린홈</a> <!-- SEO: 로고 링크는 홈으로 -->
+             <!-- SEO: 로고 링크는 홈으로 - 실제 주소로 변경하세요! -->
+            <a href="https://clean-home.github.io/" class="logo">클린홈</a>
             <nav>
                 <ul>
                     <li><a href="#services">서비스</a></li>
